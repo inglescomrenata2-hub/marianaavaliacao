@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progress Assessment — Maryana</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --coral:#D85A30;
+  --coral-light:#FAECE7;
+  --coral-mid:#F0997B;
+  --coral-dark:#993C1D;
+  --green-light:#EAF3DE;
+  --green-mid:#7CB84A;
+  --green-dark:#3B6D11;
+  --amber-light:#FEF3DA;
+  --amber-mid:#EF9F27;
+  --amber-dark:#7A4A08;
+  --red-light:#FFF0F0;
+  --red-mid:#FC8181;
+  --blue-light:#E8F0FF;
+  --blue-mid:#4A7FD4;
+  --blue-dark:#1E3F7A;
+  --bg:#F5F3EF;
+  --card:#FFFFFF;
+  --border:#E5E1DA;
+  --muted:#9A9690;
+  --text:#2A2825;
+  --sub:#5C5A56;
+  --r:10px;
+  --rlg:16px;
+}
+
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
+
+/* HERO */
+.hero{background:var(--coral);padding:44px 44px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.07)}
+.hero::after{content:'';position:absolute;bottom:-30px;left:120px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hero-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px;position:relative}
+.hero h1{font-family:'DM Serif Display',serif;font-size:2.1rem;color:#fff;line-height:1.2;position:relative;margin-bottom:6px}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.78);position:relative;line-height:1.6}
+
+/* TIMER BAR */
+.timer-hero{background:rgba(255,255,255,.12);border-radius:12px;padding:14px 20px;margin:20px 44px 0;display:flex;align-items:center;gap:16px;position:relative}
+.timer-hero .t-label{font-size:.8rem;color:rgba(255,255,255,.7);white-space:nowrap}
+.timer-hero .t-track{flex:1;height:7px;background:rgba(255,255,255,.18);border-radius:10px;overflow:hidden}
+.timer-hero .t-fill{height:100%;background:#fff;border-radius:10px;transition:width 1s linear;width:100%}
+.timer-hero .t-num{font-size:1.3rem;font-weight:700;color:#fff;min-width:58px;font-variant-numeric:tabular-nums}
+.t-start-btn{background:#fff;color:var(--coral);border:none;border-radius:8px;padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+.t-start-btn:hover{opacity:.88}
+
+/* SECTION NAV */
+.sec-nav{display:flex;gap:6px;padding:24px 44px 0;flex-wrap:wrap}
+.sec-btn{background:var(--card);border:1.5px solid var(--border);color:var(--sub);font-size:.75rem;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .16s;letter-spacing:.01em}
+.sec-btn:hover,.sec-btn.done{background:var(--coral);border-color:var(--coral);color:#fff}
+
+/* SECTION */
+.section{margin:28px 44px 0;background:var(--card);border-radius:var(--rlg);border:1.5px solid var(--border);overflow:hidden}
+.sec-head{padding:22px 28px 20px;border-bottom:1.5px solid var(--border);display:flex;align-items:flex-start;gap:16px}
+.sec-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.ico-coral{background:var(--coral-light)}
+.ico-amber{background:var(--amber-light)}
+.ico-green{background:var(--green-light)}
+.ico-blue{background:var(--blue-light)}
+.ico-purple{background:#F3EEFF}
+.sec-meta{flex:1}
+.sec-eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.sec-title{font-family:'DM Serif Display',serif;font-size:1.18rem;line-height:1.3}
+.sec-info{font-size:.78rem;color:var(--muted);margin-top:2px}
+.sec-body{padding:26px 28px}
+
+/* READING PASSAGE */
+.passage{background:var(--bg);border-left:3px solid var(--coral);border-radius:0 8px 8px 0;padding:18px 20px;font-size:.92rem;line-height:1.75;color:var(--text);margin-bottom:20px}
+.passage strong{color:var(--coral-dark)}
+
+/* EXERCISE LABEL */
+.ex-label{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ex-num{background:var(--coral);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0}
+.ex-block{margin-bottom:26px}
+.ex-block:last-child{margin-bottom:0}
+.ex-instr{font-size:.88rem;color:var(--sub);font-style:italic;margin-bottom:12px;line-height:1.5}
+
+/* FILL IN BLANK */
+.fill-row{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:11px 16px;margin-bottom:7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:.9rem;line-height:1.6}
+.fill-row .n{color:var(--coral);font-weight:700;min-width:18px;font-size:.84rem}
+.blank{border:none;border-bottom:2px solid var(--coral-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);padding:2px 5px;min-width:110px;text-align:center;transition:border-color .2s}
+.blank:focus{outline:none;border-color:var(--coral)}
+.blank.ok{border-color:var(--green-mid);color:var(--green-dark)}
+.blank.no{border-color:var(--red-mid);color:#C53030}
+
+/* WORD BANK */
+.wbank{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;background:var(--bg);border:1.5px dashed var(--border);border-radius:8px;padding:10px 14px}
+.wchip{background:var(--coral-light);color:var(--coral-dark);font-size:.79rem;font-weight:600;padding:3px 11px;border-radius:20px;border:1px solid var(--coral-mid)}
+
+/* MCQ */
+.mcq-row{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:7px}
+.mcq-q{font-size:.9rem;line-height:1.5;margin-bottom:9px}
+.mcq-q .n{color:var(--coral);font-weight:700;margin-right:4px}
+.mcq-opts{display:flex;flex-wrap:wrap;gap:6px}
+.mopt{background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:5px 14px;font-size:.84rem;cursor:pointer;transition:all .15s;color:var(--text)}
+.mopt:hover{border-color:var(--coral-mid)}
+.mopt.picked{background:var(--coral-light);border-color:var(--coral);color:var(--coral-dark);font-weight:600}
+.mopt.correct{background:var(--green-light);border-color:var(--green-mid);color:var(--green-dark);font-weight:600}
+.mopt.wrong{background:var(--red-light);border-color:var(--red-mid);color:#C53030}
+
+/* TRUE FALSE */
+.tf-row{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:7px;display:flex;align-items:flex-start;gap:12px}
+.tf-txt{flex:1;font-size:.9rem;line-height:1.5}
+.tf-txt .n{color:var(--coral);font-weight:700;margin-right:4px}
+.tf-btns{display:flex;gap:6px;flex-shrink:0;padding-top:2px}
+.tfb{background:#fff;border:1.5px solid var(--border);border-radius:6px;padding:4px 12px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s}
+.tfb:hover{border-color:var(--coral-mid)}
+.tfb.ok{background:var(--green-light);border-color:var(--green-mid);color:var(--green-dark)}
+.tfb.no{background:var(--red-light);border-color:var(--red-mid);color:#C53030}
+
+/* TEXTAREA */
+.tarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);resize:vertical;min-height:90px;line-height:1.6;background:#fff;transition:border-color .2s}
+.tarea:focus{outline:none;border-color:var(--coral)}
+.tarea-label{font-size:.84rem;color:var(--sub);margin-bottom:6px;line-height:1.5}
+
+/* SPEAKING CARD */
+.speak-card{background:linear-gradient(135deg,#1a1a2e 0%,#2d1b4e 100%);border-radius:var(--rlg);padding:22px 24px;color:#fff;margin-bottom:16px}
+.speak-card:last-child{margin-bottom:0}
+.sk-tag{font-size:.67rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--coral-mid);margin-bottom:7px}
+.sk-prompt{font-family:'DM Serif Display',serif;font-size:1.05rem;line-height:1.45;margin-bottom:12px}
+.sk-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.sk-chip{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.15)}
+.sk-timer-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sk-time{font-size:1.5rem;font-weight:700;color:#fff;min-width:52px;font-variant-numeric:tabular-nums}
+.sk-track{flex:1;height:5px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden}
+.sk-fill{height:100%;background:var(--coral);border-radius:10px;transition:width 1s linear;width:100%}
+.sk-btn{background:var(--coral);color:#fff;border:none;border-radius:7px;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:background .2s}
+.sk-btn:hover{background:var(--coral-dark)}
+.sk-btn.ghost{background:rgba(255,255,255,.1);margin-left:5px}
+.sk-btn.ghost:hover{background:rgba(255,255,255,.18)}
+.sk-notes{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:rgba(255,255,255,.85);resize:vertical;min-height:70px;margin-top:10px}
+.sk-notes::placeholder{color:rgba(255,255,255,.3)}
+.sk-notes:focus{outline:none;border-color:rgba(255,255,255,.3)}
+
+/* BUTTONS */
+.check-btn{display:inline-flex;align-items:center;gap:7px;background:var(--coral);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:.87rem;font-weight:600;cursor:pointer;margin-top:14px;transition:background .2s}
+.check-btn:hover{background:var(--coral-dark)}
+.key-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;padding:8px 15px;font-family:'DM Sans',sans-serif;font-size:.83rem;cursor:pointer;margin-top:14px;margin-left:8px;transition:all .18s}
+.key-btn:hover{border-color:var(--muted);color:var(--text)}
+
+/* FEEDBACK */
+.fb{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:.87rem;font-weight:500;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--green-light);color:var(--green-dark);border:1px solid var(--green-mid)}
+.fb.bad{background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid)}
+.fb.info{background:var(--amber-light);color:var(--amber-dark);border:1px solid var(--amber-mid)}
+
+/* ANSWER KEY */
+.akey{background:var(--amber-light);border:1.5px solid var(--amber-mid);border-radius:8px;padding:14px 18px;margin-top:12px;display:none}
+.akey.show{display:block}
+.akey h4{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amber-dark);margin-bottom:8px}
+.akey ol{margin-left:18px}
+.akey li{font-size:.86rem;color:var(--amber-dark);margin-bottom:4px;line-height:1.5}
+
+/* SCORE PANEL */
+.score-panel{margin:28px 44px 0;background:var(--card);border:1.5px solid var(--border);border-radius:var(--rlg);padding:24px 28px}
+.score-panel h2{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:18px}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.score-cell{background:var(--bg);border-radius:10px;padding:14px 16px;text-align:center}
+.score-cell .sc-num{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--coral)}
+.score-cell .sc-lbl{font-size:.75rem;color:var(--muted);margin-top:3px}
+.total-bar{background:var(--bg);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:16px}
+.total-bar .tb-num{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--coral);min-width:60px}
+.total-bar .tb-track{flex:1;height:8px;background:var(--border);border-radius:10px;overflow:hidden}
+.total-bar .tb-fill{height:100%;background:var(--coral);border-radius:10px;transition:width .6s ease;width:0%}
+.total-bar .tb-label{font-size:.82rem;color:var(--sub)}
+
+/* SAVE PANEL */
+.save-panel{margin:20px 44px 0;background:var(--card);border:1.5px solid var(--border);border-radius:var(--rlg);padding:22px 28px}
+.save-panel h3{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:14px}
+.save-row{display:flex;gap:10px;flex-wrap:wrap}
+.save-btn{display:inline-flex;align-items:center;gap:8px;background:var(--coral);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .2s}
+.save-btn:hover{background:var(--coral-dark)}
+.save-btn.secondary{background:var(--bg);color:var(--text);border:1.5px solid var(--border)}
+.save-btn.secondary:hover{border-color:var(--coral);color:var(--coral)}
+.save-status{font-size:.82rem;color:var(--green-dark);margin-top:10px;display:none}
+.save-status.show{display:block}
+
+/* PROGRESS */
+.prog-wrap{background:var(--border);border-radius:20px;height:7px;margin:20px 44px 0;overflow:hidden}
+.prog-fill{height:100%;background:var(--coral);border-radius:20px;transition:width .5s ease;width:0%}
+.prog-label{text-align:right;font-size:.76rem;color:var(--muted);margin:5px 44px 0}
+
+/* SECTION DIVIDER */
+.sec-divider{display:flex;align-items:center;gap:12px;margin:32px 44px 0}
+.sec-divider span{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+@media(max-width:640px){
+  .hero,.timer-hero,.sec-nav,.section,.score-panel,.save-panel,.prog-wrap,.prog-label,.sec-divider{margin-left:16px;margin-right:16px}
+  .hero{padding:28px 20px 24px}
+  .sec-body,.sec-head{padding:18px 18px}
+  .tf-row{flex-direction:column}
+  .score-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Maryana · English Progress Assessment</div>
+  <h1>How far have you come? 🌱</h1>
+  <div class="hero-sub">Vocabulary · Grammar · Reading · Writing · Speaking · 40 minutes</div>
+</div>
+
+<!-- GLOBAL TIMER -->
+<div class="timer-hero" id="globalTimerWrap">
+  <span class="t-label">Time remaining</span>
+  <div class="t-track"><div class="t-fill" id="gFill"></div></div>
+  <div class="t-num" id="gTime">40:00</div>
+  <button class="t-start-btn" onclick="startGlobal()">▶ Start timer</button>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-wrap"><div class="prog-fill" id="mainProg"></div></div>
+<div class="prog-label" id="progLabel">0 of 5 sections completed</div>
+
+<!-- SECTION NAV -->
+<div class="sec-nav">
+  <button class="sec-btn" onclick="go('s1')">1 · Vocabulary</button>
+  <button class="sec-btn" onclick="go('s2')">2 · Grammar</button>
+  <button class="sec-btn" onclick="go('s3')">3 · Reading</button>
+  <button class="sec-btn" onclick="go('s4')">4 · Writing</button>
+  <button class="sec-btn" onclick="go('s5')">5 · Speaking</button>
+</div>
+
+<!-- ══════════════════════════════════════
+  SECTION 1 — VOCABULARY  (~8 min)
+══════════════════════════════════════ -->
+<div class="sec-divider"><span>Section 1</span></div>
+<div class="section" id="s1">
+  <div class="sec-head">
+    <div class="sec-icon ico-coral">📚</div>
+    <div class="sec-meta">
+      <div class="sec-eyebrow">Section 1 · ~8 minutes</div>
+      <div class="sec-title">Vocabulary</div>
+      <div class="sec-info">Leadership, workplace & logistics · Classes 1–2, 7, 13</div>
+    </div>
+  </div>
+  <div class="sec-body">
+
+    <!-- Ex 1 – MCQ -->
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">1</div>Choose the correct meaning</div>
+      <p class="ex-instr">Click the option that best matches the word in bold.</p>
+
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">A.</span> <strong>Thrive</strong></div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'thrive','struggle')">to struggle under pressure</button>
+          <button class="mopt" onclick="mcq(this,'thrive','thrive')">to grow and do well</button>
+          <button class="mopt" onclick="mcq(this,'thrive','leave')">to leave the team</button>
+        </div>
+      </div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">B.</span> <strong>Inbound</strong></div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'inbound','leaving')">leaving the warehouse</button>
+          <button class="mopt" onclick="mcq(this,'inbound','inbound')">arriving at the destination</button>
+          <button class="mopt" onclick="mcq(this,'inbound','delayed')">delayed by customs</button>
+        </div>
+      </div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">C.</span> <strong>Dispatched</strong></div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'dispatched','dispatched')">sent out for delivery</button>
+          <button class="mopt" onclick="mcq(this,'dispatched','received')">received at the office</button>
+          <button class="mopt" onclick="mcq(this,'dispatched','cancelled')">cancelled by the carrier</button>
+        </div>
+      </div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">D.</span> <strong>Morale</strong></div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'morale','morale')">the team's motivation and confidence</button>
+          <button class="mopt" onclick="mcq(this,'morale','salary')">the salary a person earns</button>
+          <button class="mopt" onclick="mcq(this,'morale','workload')">the amount of work given</button>
+        </div>
+      </div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">E.</span> <strong>Carbon footprint</strong></div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'carbon','cost')">the cost of transporting goods</button>
+          <button class="mopt" onclick="mcq(this,'carbon','footprint')">the amount of CO₂ an activity produces</button>
+          <button class="mopt" onclick="mcq(this,'carbon','weight')">the total weight of a shipment</button>
+        </div>
+      </div>
+      <button class="check-btn" onclick="checkMCQSec1()">✓ Check answers</button>
+      <div class="fb" id="mcq1-fb"></div>
+    </div>
+
+    <!-- Ex 2 – Fill in the blank -->
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">2</div>Fill in the blank</div>
+      <div class="wbank">
+        <span class="wchip">carriers</span><span class="wchip">consignments</span>
+        <span class="wchip">outgoing</span><span class="wchip">freight</span>
+        <span class="wchip">figure out</span><span class="wchip">work my way up</span>
+      </div>
+      <div class="fill-row"><span class="n">1.</span> I started as a clerk and I plan to <input class="blank" id="v1" placeholder="__________"> in this company.</div>
+      <div class="fill-row"><span class="n">2.</span> We use three different <input class="blank" id="v2" placeholder="__________"> to deliver products across the country.</div>
+      <div class="fill-row"><span class="n">3.</span> Air <input class="blank" id="v3" placeholder="__________"> is faster than sea transport but costs a lot more.</div>
+      <div class="fill-row"><span class="n">4.</span> She's very <input class="blank" id="v4" placeholder="__________"> — she loves meeting new people and building connections.</div>
+      <div class="fill-row"><span class="n">5.</span> All <input class="blank" id="v5" placeholder="__________"> are tracked with a unique code from the moment they leave the warehouse.</div>
+      <div class="fill-row"><span class="n">6.</span> Let me <input class="blank" id="v6" placeholder="__________"> what went wrong with this delivery before we call the client.</div>
+      <button class="check-btn" onclick="checkFill1()">✓ Check answers</button>
+      <button class="key-btn" onclick="toggleKey('key-v1')">Show key</button>
+      <div class="akey" id="key-v1">
+        <h4>Answer key</h4>
+        <ol><li>work my way up</li><li>carriers</li><li>freight</li><li>outgoing</li><li>consignments</li><li>figure out</li></ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  SECTION 2 — GRAMMAR  (~10 min)
+══════════════════════════════════════ -->
+<div class="sec-divider"><span>Section 2</span></div>
+<div class="section" id="s2">
+  <div class="sec-head">
+    <div class="sec-icon ico-amber">✏️</div>
+    <div class="sec-meta">
+      <div class="sec-eyebrow">Section 2 · ~10 minutes</div>
+      <div class="sec-title">Grammar</div>
+      <div class="sec-info">Modal verbs · Past tenses · Question tags · Classes 1–2, 9–11, 15</div>
+    </div>
+  </div>
+  <div class="sec-body">
+
+    <!-- Ex 3 – Modals MCQ -->
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">3</div>Modal verbs — choose the correct option</div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">1.</span> You _____ always double-check the routing before the drivers leave. It's mandatory.</div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'g1','must')">must</button>
+          <button class="mopt" onclick="mcq(this,'g1','might')">might</button>
+          <button class="mopt" onclick="mcq(this,'g1','would')">would</button>
+        </div>
+      </div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">2.</span> She _____ be late — I saw her in the building five minutes ago.</div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'g2','cant')">can't</button>
+          <button class="mopt" onclick="mcq(this,'g2','should')">should</button>
+          <button class="mopt" onclick="mcq(this,'g2','might')">might</button>
+        </div>
+      </div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">3.</span> The consignment _____ arrive tomorrow, but there could be delays at customs.</div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'g3','would')">would</button>
+          <button class="mopt" onclick="mcq(this,'g3','might')">might</button>
+          <button class="mopt" onclick="mcq(this,'g3','must')">must</button>
+        </div>
+      </div>
+      <div class="mcq-row">
+        <div class="mcq-q"><span class="n">4.</span> _____ you send me the report before the meeting? I need to review it.</div>
+        <div class="mcq-opts">
+          <button class="mopt" onclick="mcq(this,'g4','could')">Could</button>
+          <button class="mopt" onclick="mcq(this,'g4','must')">Must</button>
+          <button class="mopt" onclick="mcq(this,'g4','should')">Should</button>
+        </div>
+      </div>
+      <button class="check-btn" onclick="checkMCQSec2()">✓ Check answers</button>
+      <div class="fb" id="mcq2-fb"></div>
+    </div>
+
+    <!-- Ex 4 – Past tenses fill -->
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">4</div>Past tenses — complete with the correct form</div>
+      <p class="ex-instr">Use Simple Past or Past Continuous. Put the verb in the correct form.</p>
+      <div class="fill-row"><span class="n">1.</span> I <input class="blank" id="g5" placeholder="(work)"> on the schedule when my manager called.</div>
+      <div class="fill-row"><span class="n">2.</span> She <input class="blank" id="g6" placeholder="(start)"> her career as a dispatcher three years ago.</div>
+      <div class="fill-row"><span class="n">3.</span> While the drivers <input class="blank" id="g7" placeholder="(deliver)"> the packages, the system crashed.</div>
+      <div class="fill-row"><span class="n">4.</span> We <input class="blank" id="g8" placeholder="(figure out)"> the problem before the client noticed anything.</div>
+      <div class="fill-row"><span class="n">5.</span> Last year, the company <input class="blank" id="g9" placeholder="(expand)"> its distribution network significantly.</div>
+      <button class="check-btn" onclick="checkFill2()">✓ Check answers</button>
+      <button class="key-btn" onclick="toggleKey('key-g2')">Show key</button>
+      <div class="akey" id="key-g2">
+        <h4>Answer key</h4>
+        <ol><li>was working</li><li>started</li><li>were delivering</li><li>figured out</li><li>expanded</li></ol>
+      </div>
+    </div>
+
+    <!-- Ex 5 – Question Tags -->
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">5</div>Question tags — add the correct tag</div>
+      <p class="ex-instr">Type the question tag that completes each sentence.</p>
+      <div class="fill-row"><span class="n">1.</span> You finished the routing schedule, <input class="blank" id="qt1" placeholder="______?"></div>
+      <div class="fill-row"><span class="n">2.</span> The carriers haven't arrived yet, <input class="blank" id="qt2" placeholder="______?"></div>
+      <div class="fill-row"><span class="n">3.</span> She is the new dispatcher, <input class="blank" id="qt3" placeholder="______?"></div>
+      <div class="fill-row"><span class="n">4.</span> They won't cancel the delivery, <input class="blank" id="qt4" placeholder="______?"></div>
+      <div class="fill-row"><span class="n">5.</span> We should update the client, <input class="blank" id="qt5" placeholder="______?"></div>
+      <button class="check-btn" onclick="checkQT()">✓ Check answers</button>
+      <button class="key-btn" onclick="toggleKey('key-qt')">Show key</button>
+      <div class="akey" id="key-qt">
+        <h4>Answer key</h4>
+        <ol><li>didn't you?</li><li>have they?</li><li>isn't she?</li><li>will they?</li><li>shouldn't we?</li></ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  SECTION 3 — READING  (~8 min)
+══════════════════════════════════════ -->
+<div class="sec-divider"><span>Section 3</span></div>
+<div class="section" id="s3">
+  <div class="sec-head">
+    <div class="sec-icon ico-green">📖</div>
+    <div class="sec-meta">
+      <div class="sec-eyebrow">Section 3 · ~8 minutes</div>
+      <div class="sec-title">Reading Comprehension</div>
+      <div class="sec-info">Read and answer — logistics & workplace context</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div class="passage">
+      Maria has worked in logistics for six years. She <strong>started out</strong> as a warehouse assistant and <strong>worked her way up</strong> to operations coordinator. Her job involves managing <strong>inbound and outbound</strong> consignments, coordinating with <strong>carriers</strong>, and making sure <strong>time-sensitive deliveries</strong> reach their destination without delays.<br><br>
+      Last month, one of their main carriers had a problem with a truck, and a large <strong>freight</strong> shipment was delayed by two days. Maria had to <strong>figure out</strong> an alternative route and contact the clients directly. It was stressful, but in the end, she handled it well. Her manager said her <strong>morale</strong> during difficult situations is one of her greatest strengths. Maria is <strong>likely</strong> to be promoted soon, which would be a <strong>reasonable</strong> recognition of everything she has done for the company.
+    </div>
+
+    <!-- Ex 6 – True/False -->
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">6</div>True or False?</div>
+      <div class="tf-row">
+        <div class="tf-txt"><span class="n">1.</span> Maria started her career as an operations coordinator.</div>
+        <div class="tf-btns"><button class="tfb" onclick="tf(this,'F','tf1')">T</button><button class="tfb" onclick="tf(this,'F','tf1')">F</button></div>
+      </div>
+      <div class="tf-row">
+        <div class="tf-txt"><span class="n">2.</span> A carrier problem caused a freight delay last month.</div>
+        <div class="tf-btns"><button class="tfb" onclick="tf(this,'T','tf2')">T</button><button class="tfb" onclick="tf(this,'T','tf2')">F</button></div>
+      </div>
+      <div class="tf-row">
+        <div class="tf-txt"><span class="n">3.</span> Maria did not contact the clients about the delay.</div>
+        <div class="tf-btns"><button class="tfb" onclick="tf(this,'F','tf3')">T</button><button class="tfb" onclick="tf(this,'F','tf3')">F</button></div>
+      </div>
+      <div class="tf-row">
+        <div class="tf-txt"><span class="n">4.</span> Her manager praised her attitude during difficult situations.</div>
+        <div class="tf-btns"><button class="tfb" onclick="tf(this,'T','tf4')">T</button><button class="tfb" onclick="tf(this,'T','tf4')">F</button></div>
+      </div>
+      <div class="tf-row">
+        <div class="tf-txt"><span class="n">5.</span> It is unlikely that Maria will be promoted.</div>
+        <div class="tf-btns"><button class="tfb" onclick="tf(this,'F','tf5')">T</button><button class="tfb" onclick="tf(this,'F','tf5')">F</button></div>
+      </div>
+      <div class="fb" id="tf-fb"></div>
+    </div>
+
+    <!-- Ex 7 – Short answer -->
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">7</div>Short answer questions</div>
+      <p class="ex-instr">Answer in your own words. Write 1–2 sentences for each.</p>
+      <p class="tarea-label">What problem did Maria face last month, and how did she solve it?</p>
+      <textarea class="tarea" id="r1" placeholder="Write your answer here…"></textarea>
+      <p class="tarea-label" style="margin-top:12px">What does the text say about Maria's chances of promotion? Do you think she deserves it?</p>
+      <textarea class="tarea" id="r2" placeholder="Write your answer here…"></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  SECTION 4 — WRITING  (~7 min)
+══════════════════════════════════════ -->
+<div class="sec-divider"><span>Section 4</span></div>
+<div class="section" id="s4">
+  <div class="sec-head">
+    <div class="sec-icon ico-blue">✍️</div>
+    <div class="sec-meta">
+      <div class="sec-eyebrow">Section 4 · ~7 minutes</div>
+      <div class="sec-title">Writing</div>
+      <div class="sec-info">Storytelling with past tenses + vocabulary in context</div>
+    </div>
+  </div>
+  <div class="sec-body">
+
+    <div class="ex-block">
+      <div class="ex-label"><div class="ex-num">8</div>Write a short paragraph</div>
+      <p class="ex-instr">Choose ONE prompt. Write 6–9 sentences. Try to use: past tenses · sequencers (First… Then… Eventually… In the end…) · at least 3 vocabulary words from today.</p>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;font-size:.88rem;line-height:1.6">
+          🟠 <strong>Option A:</strong> Tell me about a time when something went wrong at work — and how you handled it.
+        </div>
+        <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;font-size:.88rem;line-height:1.6">
+          🟠 <strong>Option B:</strong> Describe a moment when you felt proud of your work. What happened? What did you do?
+        </div>
+        <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;font-size:.88rem;line-height:1.6">
+          🟠 <strong>Option C:</strong> Talk about a time when you had to learn something new at your job. What was it? How did you feel?
+        </div>
+      </div>
+
+      <div class="wbank" style="margin-bottom:12px">
+        <span class="wchip">First…</span><span class="wchip">Then…</span><span class="wchip">After that…</span>
+        <span class="wchip">Eventually…</span><span class="wchip">In the end…</span><span class="wchip">Looking back…</span>
+      </div>
+
+      <textarea class="tarea" id="w1" style="min-height:160px" placeholder="Write your paragraph here… (Option A / B / C)"></textarea>
+    </div>
+
+    <div class="ex-block" style="margin-top:20px">
+      <div class="ex-label"><div class="ex-num">9</div>Self-correction check</div>
+      <p class="ex-instr">After writing, re-read your paragraph and answer:</p>
+      <p class="tarea-label">Did you use Simple Past or Past Continuous correctly? Give one example from your text.</p>
+      <textarea class="tarea" id="w2" placeholder="Example from my paragraph…"></textarea>
+      <p class="tarea-label" style="margin-top:12px">Which vocabulary word did you use? Write the sentence you used it in.</p>
+      <textarea class="tarea" id="w3" placeholder="My sentence with vocabulary…"></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  SECTION 5 — SPEAKING  (~7 min)
+══════════════════════════════════════ -->
+<div class="sec-divider"><span>Section 5</span></div>
+<div class="section" id="s5">
+  <div class="sec-head">
+    <div class="sec-icon ico-purple">🎤</div>
+    <div class="sec-meta">
+      <div class="sec-eyebrow">Section 5 · ~7 minutes</div>
+      <div class="sec-title">Speaking</div>
+      <div class="sec-info">Fluency, vocabulary & confidence — speak without stopping!</div>
+    </div>
+  </div>
+  <div class="sec-body">
+
+    <p class="ex-instr" style="margin-bottom:16px">You have 3 prompts. Answer each one out loud. Use the timer. Don't stop — it's okay to make mistakes. Jot notes in the box after if you want to remember something.</p>
+
+    <div class="speak-card">
+      <div class="sk-tag">🎤 Prompt 1 · 60 seconds</div>
+      <div class="sk-prompt">"Tell me about a time when you dealt with a difficult situation at work. What happened? What did you do? How did it end?"</div>
+      <div class="sk-chips">
+        <span class="sk-chip">First… Then… Eventually…</span>
+        <span class="sk-chip">I had to figure out…</span>
+        <span class="sk-chip">In the end…</span>
+        <span class="sk-chip">I was working when…</span>
+      </div>
+      <div class="sk-timer-row">
+        <div class="sk-time" id="sp1-d">1:00</div>
+        <div class="sk-track"><div class="sk-fill" id="sp1-f"></div></div>
+        <button class="sk-btn" onclick="startSpeak('sp1',60)">Start</button>
+        <button class="sk-btn ghost" onclick="resetSpeak('sp1',60)">Reset</button>
+      </div>
+      <textarea class="sk-notes" id="sp1-n" placeholder="Notes after speaking (optional)…"></textarea>
+    </div>
+
+    <div class="speak-card">
+      <div class="sk-tag">🎤 Prompt 2 · 90 seconds</div>
+      <div class="sk-prompt">"Describe your job to someone who has never heard of it. What do you do? What are the challenges? What do you love about it?"</div>
+      <div class="sk-chips">
+        <span class="sk-chip">My job involves…</span>
+        <span class="sk-chip">The most challenging part is…</span>
+        <span class="sk-chip">carriers / routing / consignments</span>
+        <span class="sk-chip">It's almost like a puzzle…</span>
+      </div>
+      <div class="sk-timer-row">
+        <div class="sk-time" id="sp2-d">1:30</div>
+        <div class="sk-track"><div class="sk-fill" id="sp2-f"></div></div>
+        <button class="sk-btn" onclick="startSpeak('sp2',90)">Start</button>
+        <button class="sk-btn ghost" onclick="resetSpeak('sp2',90)">Reset</button>
+      </div>
+      <textarea class="sk-notes" id="sp2-n" placeholder="Notes after speaking (optional)…"></textarea>
+    </div>
+
+    <div class="speak-card">
+      <div class="sk-tag">🎤 Prompt 3 · 60 seconds — Opinion</div>
+      <div class="sk-prompt">"Do you think logistics will change a lot in the next 10 years? What do you think will be different?"</div>
+      <div class="sk-chips">
+        <span class="sk-chip">I think… / I believe…</span>
+        <span class="sk-chip">might / could / will probably</span>
+        <span class="sk-chip">carbon footprint</span>
+        <span class="sk-chip">In my opinion…</span>
+      </div>
+      <div class="sk-timer-row">
+        <div class="sk-time" id="sp3-d">1:00</div>
+        <div class="sk-track"><div class="sk-fill" id="sp3-f"></div></div>
+        <button class="sk-btn" onclick="startSpeak('sp3',60)">Start</button>
+        <button class="sk-btn ghost" onclick="resetSpeak('sp3',60)">Reset</button>
+      </div>
+      <textarea class="sk-notes" id="sp3-n" placeholder="Notes after speaking (optional)…"></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  SCORE PANEL
+══════════════════════════════════════ -->
+<div class="sec-divider"><span>Your Results</span></div>
+<div class="score-panel">
+  <h2>📊 Assessment Summary</h2>
+  <div class="score-grid">
+    <div class="score-cell"><div class="sc-num" id="sc-vocab">—</div><div class="sc-lbl">Vocabulary</div></div>
+    <div class="score-cell"><div class="sc-num" id="sc-gram">—</div><div class="sc-lbl">Grammar</div></div>
+    <div class="score-cell"><div class="sc-num" id="sc-read">—</div><div class="sc-lbl">Reading</div></div>
+    <div class="score-cell"><div class="sc-num" id="sc-write">—</div><div class="sc-lbl">Writing</div></div>
+    <div class="score-cell"><div class="sc-num" id="sc-speak">—</div><div class="sc-lbl">Speaking</div></div>
+  </div>
+  <div class="total-bar">
+    <div class="tb-num" id="tb-num">0%</div>
+    <div class="tb-track"><div class="tb-fill" id="tb-fill"></div></div>
+    <div class="tb-label">overall score (auto-check sections)</div>
+  </div>
+
+  <div style="margin-top:18px">
+    <p class="tarea-label">Self-reflection: What was easy? What was difficult? What do you want to keep practicing?</p>
+    <textarea class="tarea" id="reflect" style="min-height:80px" placeholder="Write your reflection here…"></textarea>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  SAVE PANEL
+══════════════════════════════════════ -->
+<div class="save-panel">
+  <h3>💾 Save your answers</h3>
+  <p style="font-size:.85rem;color:var(--sub);margin-bottom:14px;line-height:1.5">Your answers are saved in this browser. Click <strong>Copy results</strong> to paste them into Notion or send to your teacher.</p>
+  <div class="save-row">
+    <button class="save-btn" onclick="saveAnswers()">💾 Save progress</button>
+    <button class="save-btn" onclick="copyResults()">📋 Copy results</button>
+    <button class="save-btn secondary" onclick="loadAnswers()">↩ Load saved</button>
+    <button class="save-btn secondary" onclick="clearAll()">🗑 Clear all</button>
+  </div>
+  <div class="save-status" id="saveStatus"></div>
+</div>
+
+<script>
+// ─── GLOBAL TIMER ───
+let gInterval = null;
+let gRemaining = 2400;
+function startGlobal(){
+  if(gInterval) return;
+  gInterval = setInterval(()=>{
+    gRemaining--;
+    const m = Math.floor(gRemaining/60);
+    const s = gRemaining%60;
+    document.getElementById('gTime').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    document.getElementById('gFill').style.width = (gRemaining/2400*100)+'%';
+    if(gRemaining<=300) document.getElementById('gFill').style.background='#FC8181';
+    if(gRemaining<=0){ clearInterval(gInterval); document.getElementById('gTime').textContent='0:00'; }
+  },1000);
+}
+
+// ─── SPEAKING TIMERS ───
+const spTimers={};
+function startSpeak(id,total){
+  if(spTimers[id]) clearInterval(spTimers[id].iv);
+  let rem = total;
+  const d=document.getElementById(`${id}-d`), f=document.getElementById(`${id}-f`);
+  spTimers[id]={iv:setInterval(()=>{
+    rem--;
+    const m=Math.floor(rem/60), s=rem%60;
+    d.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+    f.style.width=(rem/total*100)+'%';
+    if(rem<=10) f.style.background='#FC8181';
+    if(rem<=0){clearInterval(spTimers[id].iv);d.textContent='0:00';f.style.width='0%';}
+  },1000)};
+}
+function resetSpeak(id,total){
+  if(spTimers[id]) clearInterval(spTimers[id].iv);
+  const m=Math.floor(total/60), s=total%60;
+  document.getElementById(`${id}-d`).textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  document.getElementById(`${id}-f`).style.width='100%';
+  document.getElementById(`${id}-f`).style.background='var(--coral)';
+}
+
+// ─── NAVIGATION ───
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+
+// ─── KEY TOGGLE ───
+function toggleKey(id){document.getElementById(id).classList.toggle('show');}
+function showFb(id,type,msg){const el=document.getElementById(id);el.className=`fb show ${type}`;el.textContent=msg;}
+
+// ─── MCQ ENGINE ───
+const mcqState={};
+function mcq(btn, qid, val){
+  const opts=btn.closest('.mcq-opts').querySelectorAll('.mopt');
+  opts.forEach(o=>o.classList.remove('picked'));
+  btn.classList.add('picked');
+  mcqState[qid]=val;
+}
+
+// Sec 1 MCQ answers
+const sec1Correct={thrive:'thrive',inbound:'inbound',dispatched:'dispatched',morale:'morale',carbon:'footprint'};
+let sec1Score=0;
+function checkMCQSec1(){
+  let c=0,t=Object.keys(sec1Correct).length;
+  Object.keys(sec1Correct).forEach(qid=>{
+    const val=mcqState[qid];
+    if(!val) return;
+    const btn=document.querySelector(`.mopt[data-picked="${qid}"]`)||[...document.querySelectorAll('.mopt')].find(b=>b.onclick&&b.getAttribute('onclick')?.includes(`'${qid}'`)&&b.classList.contains('picked'));
+    if(val===sec1Correct[qid]) c++;
+  });
+  // simpler scoring based on state
+  c=Object.keys(sec1Correct).filter(qid=>mcqState[qid]===sec1Correct[qid]).length;
+  sec1Score=c;
+  updateScore();
+  const pct=Math.round(c/t*100);
+  showFb('mcq1-fb', c===t?'good':c>=3?'info':'bad', `${c}/${t} correct (${pct}%). ${c===t?'Perfect! 🎉':c>=3?'Almost there! Review the ones you missed.':'Keep practicing — check the key.'}`);
+  markDone('s1');
+}
+
+// Sec 2 Modal MCQ
+const sec2ModalCorrect={g1:'must',g2:'cant',g3:'might',g4:'could'};
+let sec2ModalScore=0;
+function checkMCQSec2(){
+  const c=Object.keys(sec2ModalCorrect).filter(q=>mcqState[q]===sec2ModalCorrect[q]).length;
+  const t=Object.keys(sec2ModalCorrect).length;
+  sec2ModalScore=c;
+  updateScore();
+  showFb('mcq2-fb',c===t?'good':c>=3?'info':'bad',`${c}/${t} correct. ${c===t?'Great modal verb use! 💪':'Review the ones you missed.'}`);
+}
+
+// ─── FILL IN BLANK ───
+const fill1A={v1:'work my way up',v2:'carriers',v3:'freight',v4:'outgoing',v5:'consignments',v6:'figure out'};
+let fill1Score=0;
+function checkFill1(){
+  let c=0;
+  Object.keys(fill1A).forEach(id=>{
+    const inp=document.getElementById(id);
+    const val=inp.value.trim().toLowerCase();
+    const exp=fill1A[id].toLowerCase();
+    if(val===exp){inp.classList.add('ok');inp.classList.remove('no');c++;}
+    else if(val){inp.classList.add('no');inp.classList.remove('ok');}
+  });
+  fill1Score=c;
+  updateScore();
+  markDone('s1');
+}
+
+const fill2A={g5:'was working',g6:'started',g7:'were delivering',g8:'figured out',g9:'expanded'};
+let fill2Score=0;
+function checkFill2(){
+  let c=0;
+  Object.keys(fill2A).forEach(id=>{
+    const inp=document.getElementById(id);
+    const val=inp.value.trim().toLowerCase();
+    if(val===fill2A[id]||val===fill2A[id].replace(' ','  ')){inp.classList.add('ok');inp.classList.remove('no');c++;}
+    else if(val){inp.classList.add('no');inp.classList.remove('ok');}
+  });
+  fill2Score=c;
+  updateScore();
+}
+
+const qtA={qt1:"didn't you?",qt2:"have they?",qt3:"isn't she?",qt4:"will they?",qt5:"shouldn't we?"};
+let qtScore=0;
+function checkQT(){
+  let c=0;
+  Object.keys(qtA).forEach(id=>{
+    const inp=document.getElementById(id);
+    const val=inp.value.trim().toLowerCase();
+    const exp=qtA[id].toLowerCase();
+    if(val===exp||val===exp.replace('?','')){inp.classList.add('ok');inp.classList.remove('no');c++;}
+    else if(val){inp.classList.add('no');inp.classList.remove('ok');}
+  });
+  qtScore=c;
+  updateScore();
+  markDone('s2');
+}
+
+// ─── TRUE/FALSE ───
+const tfAnswers={tf1:'F',tf2:'T',tf3:'F',tf4:'T',tf5:'F'};
+const tfDone={};
+let tfScore=0;
+function tf(btn,answer,qid){
+  if(tfDone[qid]) return;
+  const btns=btn.closest('.tf-btns').querySelectorAll('.tfb');
+  const sel=btn.textContent;
+  if(sel===answer){btn.classList.add('ok');tfScore++;}
+  else{btn.classList.add('no');btns.forEach(b=>{if(b.textContent===answer)b.classList.add('ok');});}
+  tfDone[qid]=true;
+  if(Object.keys(tfDone).length===5){
+    updateScore();
+    showFb('tf-fb','info',`${tfScore}/5 correct. Answers in green = correct.`);
+    markDone('s3');
+  }
+}
+
+// ─── SCORE ───
+function updateScore(){
+  const vocabPts=(sec1Score||0)+(fill1Score||0); // /11
+  const gramPts=(sec2ModalScore||0)+(fill2Score||0)+(qtScore||0); // /14
+  const readPts=(tfScore||0); // /5
+  const vocabPct=Math.min(100,Math.round(vocabPts/11*100));
+  const gramPct=Math.min(100,Math.round(gramPts/14*100));
+  const readPct=Math.min(100,Math.round(readPts/5*100));
+  document.getElementById('sc-vocab').textContent=vocabPct+'%';
+  document.getElementById('sc-gram').textContent=gramPct+'%';
+  document.getElementById('sc-read').textContent=readPct+'%';
+  document.getElementById('sc-write').textContent='✍️';
+  document.getElementById('sc-speak').textContent='🎤';
+  const overall=Math.round((vocabPct+gramPct+readPct)/3);
+  document.getElementById('tb-num').textContent=overall+'%';
+  document.getElementById('tb-fill').style.width=overall+'%';
+  // main progress
+  const prog=document.getElementById('mainProg');
+  const filled=[sec1Score,fill1Score,sec2ModalScore+fill2Score+qtScore,tfScore].filter(s=>s>0).length;
+  prog.style.width=(filled/5*100)+'%';
+  document.getElementById('progLabel').textContent=`${filled} of 5 sections completed`;
+}
+
+let doneSections=new Set();
+function markDone(id){
+  doneSections.add(id);
+  document.getElementById('progLabel').textContent=`${doneSections.size} of 5 sections completed`;
+  document.getElementById('mainProg').style.width=(doneSections.size/5*100)+'%';
+}
+
+// ─── SAVE / LOAD / COPY ───
+function gatherAnswers(){
+  const ids=['v1','v2','v3','v4','v5','v6','g5','g6','g7','g8','g9','qt1','qt2','qt3','qt4','qt5','r1','r2','w1','w2','w3','sp1-n','sp2-n','sp3-n','reflect'];
+  const data={};
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)data[id]=el.value;});
+  data.mcqState=JSON.stringify(mcqState);
+  data.tfScore=tfScore;
+  data.timestamp=new Date().toISOString();
+  return data;
+}
+
+function saveAnswers(){
+  const data=gatherAnswers();
+  localStorage.setItem('maryana_assessment',JSON.stringify(data));
+  const s=document.getElementById('saveStatus');
+  s.className='save-status show';
+  s.style.color='var(--green-dark)';
+  s.textContent='✅ Saved! Your answers are stored in this browser.';
+  setTimeout(()=>s.classList.remove('show'),3000);
+}
+
+function loadAnswers(){
+  const raw=localStorage.getItem('maryana_assessment');
+  if(!raw){alert('No saved answers found in this browser.');return;}
+  const data=JSON.parse(raw);
+  const ids=['v1','v2','v3','v4','v5','v6','g5','g6','g7','g8','g9','qt1','qt2','qt3','qt4','qt5','r1','r2','w1','w2','w3','sp1-n','sp2-n','sp3-n','reflect'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&data[id])el.value=data[id];});
+  const s=document.getElementById('saveStatus');
+  s.className='save-status show';
+  s.style.color='var(--blue-dark)';
+  s.textContent=`↩ Loaded answers from ${new Date(data.timestamp).toLocaleString()}.`;
+  setTimeout(()=>s.classList.remove('show'),4000);
+}
+
+function copyResults(){
+  const data=gatherAnswers();
+  const ids=['v1','v2','v3','v4','v5','v6','g5','g6','g7','g8','g9','qt1','qt2','qt3','qt4','qt5','r1','r2','w1','w2','w3','sp1-n','sp2-n','sp3-n','reflect'];
+  const labels={
+    v1:'Vocab 1',v2:'Vocab 2',v3:'Vocab 3',v4:'Vocab 4',v5:'Vocab 5',v6:'Vocab 6',
+    g5:'Past 1',g6:'Past 2',g7:'Past 3',g8:'Past 4',g9:'Past 5',
+    qt1:'Tag 1',qt2:'Tag 2',qt3:'Tag 3',qt4:'Tag 4',qt5:'Tag 5',
+    r1:'Reading Q1',r2:'Reading Q2',
+    w1:'Writing paragraph',w2:'Self-check 1',w3:'Self-check 2',
+    'sp1-n':'Speaking notes 1','sp2-n':'Speaking notes 2','sp3-n':'Speaking notes 3',
+    reflect:'Self-reflection'
+  };
+  let text=`MARYANA — PROGRESS ASSESSMENT\nDate: ${new Date().toLocaleString()}\n\n`;
+  text+=`SCORES:\n• Vocabulary: ${document.getElementById('sc-vocab').textContent}\n• Grammar: ${document.getElementById('sc-gram').textContent}\n• Reading: ${document.getElementById('sc-read').textContent}\n• Overall: ${document.getElementById('tb-num').textContent}\n\n`;
+  text+=`WRITTEN ANSWERS:\n`;
+  ids.forEach(id=>{if(data[id])text+=`\n[${labels[id]||id}]\n${data[id]}\n`;});
+  navigator.clipboard.writeText(text).then(()=>{
+    const s=document.getElementById('saveStatus');
+    s.className='save-status show';
+    s.style.color='var(--green-dark)';
+    s.textContent='📋 Copied! Paste into Notion or send to your teacher.';
+    setTimeout(()=>s.classList.remove('show'),3000);
+  });
+}
+
+function clearAll(){
+  if(!confirm('Clear all answers? This cannot be undone.')) return;
+  const ids=['v1','v2','v3','v4','v5','v6','g5','g6','g7','g8','g9','qt1','qt2','qt3','qt4','qt5','r1','r2','w1','w2','w3','sp1-n','sp2-n','sp3-n','reflect'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  localStorage.removeItem('maryana_assessment');
+  const s=document.getElementById('saveStatus');
+  s.className='save-status show';
+  s.style.color='#C53030';
+  s.textContent='🗑 Cleared.';
+  setTimeout(()=>s.classList.remove('show'),2000);
+}
+
+// Auto-load on open
+window.addEventListener('load',()=>{
+  const raw=localStorage.getItem('maryana_assessment');
+  if(raw){
+    const s=document.getElementById('saveStatus');
+    s.className='save-status show';
+    s.style.color='var(--blue-dark)';
+    s.textContent='💡 Found saved answers — click "Load saved" to restore them.';
+    setTimeout(()=>s.classList.remove('show'),5000);
+  }
+});
+</script>
+</body>
+</html>
